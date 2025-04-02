@@ -1,5 +1,9 @@
 name: Test on environment
 description: Test on environment
+inputs:
+  GITHUB_ENVIRONMENT:
+    description: The environment to deploy to
+    required: true
 runs:
   using: composite
   steps:
