@@ -3,6 +3,7 @@ description: Deploy to environment
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/checkout-python-greetings.yml
     - name: Deploy to environment
       working-directory: 'python-greetings'
