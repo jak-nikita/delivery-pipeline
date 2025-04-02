@@ -1,9 +1,6 @@
 name: Test on environment
 description: Test on environment
 inputs:
-  GITHUB_ENVIRONMENT:
-    description: The environment to deploy to
-    required: true
 runs:
   using: composite
   steps:
@@ -12,5 +9,5 @@ runs:
       working-directory: 'course-js-api-framework'
       run: |
         npm install
-        npm run greetings greetings_${{ inputs.GITHUB_ENVIRONMENT }}
+        npm run greetings greetings_dev
       shell: bash
