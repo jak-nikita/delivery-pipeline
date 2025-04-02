@@ -30,15 +30,21 @@ jobs:
           pip install -r requirements.txt
     
   deploy-to-dev:
-      runs-on: self-hosted
-      needs: [install-pip-deps]
-      steps:
-        - uses: actions/checkout@v4
-        - name: Deploy to dev
-          run: |
-            echo "Deploying to dev..."
-            # Add commands to deploy to dev here
-
+    runs-on: self-hosted
+    needs: [install-pip-deps]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout python-greetings repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/python-greetings'
+          path: 'python-greetings'
+      - name: Deploy to dev
+        working-directory: 'python-greetings'
+        run: |
+          pm2 delete greetings-app-dev || true
+          pm2 start app.py --name greetings-app-dev --port 7001
+        
   tests-on-dev:
     runs-on: self-hosted
     needs: [deploy-to-dev]
@@ -54,11 +60,17 @@ jobs:
     needs: [tests-on-dev]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout python-greetings repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/python-greetings'
+          path: 'python-greetings'
       - name: Deploy to staging
+        working-directory: 'python-greetings'
         run: |
-          echo "Deploying to staging..."
-          # Add commands to deploy to staging here
-
+          pm2 delete greetings-app-staging || true
+          pm2 start app.py --name greetings-app-staging --port 7002
+        
   tests-on-staging:
     runs-on: self-hosted
     needs: [deploy-to-staging]
@@ -74,11 +86,17 @@ jobs:
     needs: [tests-on-staging]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout python-greetings repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/python-greetings'
+          path: 'python-greetings'
       - name: Deploy to preprod
+        working-directory: 'python-greetings'
         run: |
-          echo "Deploying to preprod..."
-          # Add commands to deploy to preprod here
-
+          pm2 delete greetings-app-preprod || true
+          pm2 start app.py --name greetings-app-preprod --port 7003
+          
   tests-on-preprod:
     runs-on: self-hosted
     needs: [deploy-to-preprod]
@@ -94,10 +112,16 @@ jobs:
     needs: [tests-on-preprod]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout python-greetings repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/python-greetings'
+          path: 'python-greetings'
       - name: Deploy to prod
+        working-directory: 'python-greetings'
         run: |
-          echo "Deploying to prod..."
-          # Add commands to deploy to prod here
+          pm2 delete greetings-app-prod || true
+          pm2 start app.py --name greetings-app-prod --port 7004
 
   tests-on-prod:
     runs-on: self-hosted
