@@ -12,5 +12,5 @@ runs:
       working-directory: 'course-js-api-framework'
       run: |
         npm install
-        npm run greetings greetings_${GITHUB_ENVIRONMENT}
+        npm run greetings greetings_${{ inputs.GITHUB_ENVIRONMENT }}
       shell: bash
