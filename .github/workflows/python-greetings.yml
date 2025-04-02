@@ -18,141 +18,72 @@ jobs:
   install-pip-deps:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout python-greetings repository
-        uses: actions/checkout@v4
-        with:
-          repository: 'mtararujs/python-greetings'
-          path: 'python-greetings'
-      - name: Install dependencies
-        working-directory: 'python-greetings'
-        run: |
-          pip install -r requirements.txt
-    
+      - uses: ./.github/actions/install-pip-deps.yaml
+
   deploy-to-dev:
     runs-on: self-hosted
     needs: [install-pip-deps]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout python-greetings repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-to-env.yaml
         with:
-          repository: 'mtararujs/python-greetings'
-          path: 'python-greetings'
-      - name: Deploy to dev
-        working-directory: 'python-greetings'
-        run: |
-          pm2 delete greetings-app-dev || true
-          pm2 start app.py --name greetings-app-dev -- --port 7001
+          GITHUB_ENVIRONMENT: 'dev'
+          PORT: 7001
 
   tests-on-dev:
     runs-on: self-hosted
     needs: [deploy-to-dev]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout course-js-api-framework repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/test-on-env.yaml
         with:
-          repository: 'mtararujs/course-js-api-framework'
-          path: 'course-js-api-framework'
-      - name: Run tests on dev
-        working-directory: 'course-js-api-framework'
-        run: |
-          npm install
-          npm run greetings greetings_dev
+          GITHUB_ENVIRONMENT: 'dev'
 
   deploy-to-staging:
     runs-on: self-hosted
     needs: [tests-on-dev]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout python-greetings repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-to-env.yaml
         with:
-          repository: 'mtararujs/python-greetings'
-          path: 'python-greetings'
-      - name: Deploy to staging
-        working-directory: 'python-greetings'
-        run: |
-          pm2 delete greetings-app-staging || true
-          pm2 start app.py --name greetings-app-staging -- --port 7002
-        
+          GITHUB_ENVIRONMENT: 'staging'
+          PORT: 7002
+
   tests-on-staging:
     runs-on: self-hosted
     needs: [deploy-to-staging]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout course-js-api-framework repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/test-on-env.yaml
         with:
-          repository: 'mtararujs/course-js-api-framework'
-          path: 'course-js-api-framework'
-      - name: Run tests on staging
-        working-directory: 'course-js-api-framework'
-        run: |
-          npm install
-          npm run greetings greetings_staging
+          GITHUB_ENVIRONMENT: 'staging'
 
   deploy-to-preprod:
     runs-on: self-hosted
     needs: [tests-on-staging]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout python-greetings repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-to-env.yaml
         with:
-          repository: 'mtararujs/python-greetings'
-          path: 'python-greetings'
-      - name: Deploy to preprod
-        working-directory: 'python-greetings'
-        run: |
-          pm2 delete greetings-app-preprod || true
-          pm2 start app.py --name greetings-app-preprod -- --port 7003
-          
+          GITHUB_ENVIRONMENT: 'preprod'
+          PORT: 7003
+
   tests-on-preprod:
     runs-on: self-hosted
     needs: [deploy-to-preprod]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout course-js-api-framework repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/test-on-env.yaml
         with:
-          repository: 'mtararujs/course-js-api-framework'
-          path: 'course-js-api-framework'
-      - name: Run tests on preprod
-        working-directory: 'course-js-api-framework'
-        run: |
-          npm install
-          npm run greetings greetings_preprod
-          
+          GITHUB_ENVIRONMENT: 'preprod'
+
   deploy-to-prod:
     runs-on: self-hosted
     needs: [tests-on-preprod]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout python-greetings repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/deploy-to-env.yaml
         with:
-          repository: 'mtararujs/python-greetings'
-          path: 'python-greetings'
-      - name: Deploy to prod
-        working-directory: 'python-greetings'
-        run: |
-          pm2 delete greetings-app-prod || true
-          pm2 start app.py --name greetings-app-prod -- --port 7004
+          GITHUB_ENVIRONMENT: 'prod'
+          PORT: 7004
 
   tests-on-prod:
     runs-on: self-hosted
     needs: [deploy-to-prod]
     steps:
-      - uses: actions/checkout@v4
-      - name: Checkout course-js-api-framework repository
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/test-on-env.yaml
         with:
-          repository: 'mtararujs/course-js-api-framework'
-          path: 'course-js-api-framework'
-      - name: Run tests on prod
-        working-directory: 'course-js-api-framework'
-        run: |
-          npm install
-          npm run greetings greetings_prod
+          GITHUB_ENVIRONMENT: 'prod'
