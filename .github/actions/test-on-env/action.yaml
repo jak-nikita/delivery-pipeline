@@ -9,3 +9,4 @@ runs:
       run: |
         npm install
         npm run greetings greetings_${GITHUB_ENVIRONMENT}
+      shell: bash
