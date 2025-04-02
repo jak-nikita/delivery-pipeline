@@ -3,7 +3,8 @@ description: Install pip dependencies
 runs:
   using: composite
   steps:
-    - uses: ./.github/actions/checkout-python-greetings.yml
+    - uses: action/checkout@v4
+    - uses: ./.github/actions/checkout-python-greetings
     - name: Install dependencies
       working-directory: 'python-greetings'
       run: |
