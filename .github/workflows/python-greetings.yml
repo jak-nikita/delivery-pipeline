@@ -1,0 +1,105 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  install-pip-deps:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pip dependencies
+        run: |
+          echo "Installing pip dependencies..."
+          # Add commands to install pip dependencies here
+
+  deploy-to-dev:
+    runs-on: self-hosted
+    needs: [install-pip-deps]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to dev
+        run: |
+          echo "Deploying to dev..."
+          # Add commands to deploy to dev here
+
+  tests-on-dev:
+    runs-on: self-hosted
+    needs: [deploy-to-dev]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests on dev
+        run: |
+          echo "Running tests on dev..."
+          # Add commands to run tests on dev here
+
+  deploy-to-staging:
+    runs-on: self-hosted
+    needs: [tests-on-dev]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging..."
+          # Add commands to deploy to staging here
+
+  tests-on-staging:
+    runs-on: self-hosted
+    needs: [deploy-to-staging]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests on staging
+        run: |
+          echo "Running tests on staging..."
+          # Add commands to run tests on staging here
+
+  deploy-to-preprod:
+    runs-on: self-hosted
+    needs: [tests-on-staging]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to preprod
+        run: |
+          echo "Deploying to preprod..."
+          # Add commands to deploy to preprod here
+
+  tests-on-preprod:
+    runs-on: self-hosted
+    needs: [deploy-to-preprod]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests on preprod
+        run: |
+          echo "Running tests on preprod..."
+          # Add commands to run tests on preprod here
+
+  deploy-to-prod:
+    runs-on: self-hosted
+    needs: [tests-on-preprod]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to prod
+        run: |
+          echo "Deploying to prod..."
+          # Add commands to deploy to prod here
+
+  tests-on-prod:
+    runs-on: self-hosted
+    needs: [deploy-to-prod]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests on prod
+        run: |
+          echo "Running tests on prod..."
+          # Add commands to run tests on prod here
