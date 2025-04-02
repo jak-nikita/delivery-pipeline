@@ -26,8 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test-on-env
-        with:
-          GITHUB_ENVIRONMENT: 'dev'
   deploy-to-staging:
     runs-on: self-hosted
     needs: [tests-on-dev]
@@ -43,8 +41,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test-on-env
-        with:
-          GITHUB_ENVIRONMENT: 'staging'
   deploy-to-preprod:
     runs-on: self-hosted
     needs: [tests-on-staging]
@@ -60,8 +56,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test-on-env
-        with:
-          GITHUB_ENVIRONMENT: 'preprod'
   deploy-to-prod:
     runs-on: self-hosted
     needs: [tests-on-preprod]
@@ -77,5 +71,3 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/test-on-env
-        with:
-          GITHUB_ENVIRONMENT: 'prod'
