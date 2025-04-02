@@ -28,7 +28,7 @@ jobs:
         working-directory: 'python-greetings'
         run: |
           ls
-          pip install -r requirements.txt
+          ../../venv/bin/pip install -r requirements.txt
     
   deploy-to-dev:
       runs-on: self-hosted
