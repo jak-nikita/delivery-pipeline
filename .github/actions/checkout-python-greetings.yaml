@@ -1,0 +1,9 @@
+name: Checkout python-greetings repository
+description: Checkout python-greetings repository
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'mtararujs/python-greetings'
+        path: 'python-greetings'
