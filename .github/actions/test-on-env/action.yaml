@@ -3,7 +3,7 @@ description: Test on environment
 runs:
   using: composite
   steps:
-    - uses: ./.github/actions/checkout-course-js-api-framework.yml
+    - uses: ./.github/actions/checkout-course-js-api-framework
     - name: Run tests on environment
       working-directory: 'course-js-api-framework'
       run: |
