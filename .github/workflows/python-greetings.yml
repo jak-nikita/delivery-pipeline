@@ -55,9 +55,6 @@ jobs:
         with:
           repository: 'mtararujs/course-js-api-framework'
           path: 'course-js-api-framework'
-      - name: Wait for 10 seconds
-        run: |
-          sleep 10
       - name: Run tests on dev
         working-directory: 'course-js-api-framework'
         run: |
