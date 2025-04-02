@@ -1,0 +1,9 @@
+name: Checkout course-js-api-framework repository
+description: Checkout course-js-api-framework repository
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: 'mtararujs/course-js-api-framework'
+        path: 'course-js-api-framework'
