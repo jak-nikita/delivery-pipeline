@@ -1,0 +1,11 @@
+name: Deploy to environment
+description: Deploy to environment
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/checkout-python-greetings.yml
+    - name: Deploy to environment
+      working-directory: 'python-greetings'
+      run: |
+        pm2 delete greetings-app-${GITHUB_ENVIRONMENT} || true
+        pm2 start app.py --name greetings-app-${GITHUB_ENVIRONMENT} -- --port ${PORT}
