@@ -1,0 +1,11 @@
+name: Test on environment
+description: Test on environment
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/checkout-course-js-api-framework.yml
+    - name: Run tests on environment
+      working-directory: 'course-js-api-framework'
+      run: |
+        npm install
+        npm run greetings greetings_${GITHUB_ENVIRONMENT}
