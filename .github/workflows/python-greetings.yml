@@ -1,89 +1,73 @@
-# This is a basic workflow to help you get started with Actions
-
+# .github/workflows/main.yml
 name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   install-pip-deps:
     runs-on: self-hosted
     steps:
-      - uses: ./.github/actions/install-pip-deps.yaml
-
+      - uses: ./.github/actions/install-pip-deps
   deploy-to-dev:
     runs-on: self-hosted
     needs: [install-pip-deps]
     steps:
-      - uses: ./.github/actions/deploy-to-env.yaml
+      - uses: ./.github/actions/deploy-to-env
         with:
           GITHUB_ENVIRONMENT: 'dev'
           PORT: 7001
-
   tests-on-dev:
     runs-on: self-hosted
     needs: [deploy-to-dev]
     steps:
-      - uses: ./.github/actions/test-on-env.yaml
+      - uses: ./.github/actions/test-on-env
         with:
           GITHUB_ENVIRONMENT: 'dev'
-
   deploy-to-staging:
     runs-on: self-hosted
     needs: [tests-on-dev]
     steps:
-      - uses: ./.github/actions/deploy-to-env.yaml
+      - uses: ./.github/actions/deploy-to-env
         with:
           GITHUB_ENVIRONMENT: 'staging'
           PORT: 7002
-
   tests-on-staging:
     runs-on: self-hosted
     needs: [deploy-to-staging]
     steps:
-      - uses: ./.github/actions/test-on-env.yaml
+      - uses: ./.github/actions/test-on-env
         with:
           GITHUB_ENVIRONMENT: 'staging'
-
   deploy-to-preprod:
     runs-on: self-hosted
     needs: [tests-on-staging]
     steps:
-      - uses: ./.github/actions/deploy-to-env.yaml
+      - uses: ./.github/actions/deploy-to-env
         with:
           GITHUB_ENVIRONMENT: 'preprod'
           PORT: 7003
-
   tests-on-preprod:
     runs-on: self-hosted
     needs: [deploy-to-preprod]
     steps:
-      - uses: ./.github/actions/test-on-env.yaml
+      - uses: ./.github/actions/test-on-env
         with:
           GITHUB_ENVIRONMENT: 'preprod'
-
   deploy-to-prod:
     runs-on: self-hosted
     needs: [tests-on-preprod]
     steps:
-      - uses: ./.github/actions/deploy-to-env.yaml
+      - uses: ./.github/actions/deploy-to-env
         with:
           GITHUB_ENVIRONMENT: 'prod'
           PORT: 7004
-
   tests-on-prod:
     runs-on: self-hosted
     needs: [deploy-to-prod]
     steps:
-      - uses: ./.github/actions/test-on-env.yaml
+      - uses: ./.github/actions/test-on-env
         with:
           GITHUB_ENVIRONMENT: 'prod'
