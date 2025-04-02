@@ -9,3 +9,4 @@ runs:
       run: |
         pm2 delete greetings-app-${GITHUB_ENVIRONMENT} || true
         pm2 start app.py --name greetings-app-${GITHUB_ENVIRONMENT} -- --port ${PORT}
+      shell: bash
