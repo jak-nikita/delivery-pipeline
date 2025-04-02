@@ -1,5 +1,12 @@
 name: Deploy to environment
 description: Deploy to environment
+inputs:
+  GITHUB_ENVIRONMENT:
+    description: The environment to deploy to
+    required: true
+  PORT:
+    description: The port to use
+    required: true
 runs:
   using: composite
   steps:
