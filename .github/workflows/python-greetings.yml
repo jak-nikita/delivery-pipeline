@@ -45,16 +45,21 @@ jobs:
           pm2 delete greetings-app-dev || true
           pm2 start app.py --name greetings-app-dev -- 7001
 
-        
   tests-on-dev:
     runs-on: self-hosted
     needs: [deploy-to-dev]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout course-js-api-framework repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/course-js-api-framework'
+          path: 'course-js-api-framework'
       - name: Run tests on dev
+        working-directory: 'course-js-api-framework'
         run: |
-          echo "Running tests on dev..."
-          # Add commands to run tests on dev here
+          npm install
+          npm run greetings greetings_dev
 
   deploy-to-staging:
     runs-on: self-hosted
@@ -77,10 +82,16 @@ jobs:
     needs: [deploy-to-staging]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout course-js-api-framework repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/course-js-api-framework'
+          path: 'course-js-api-framework'
       - name: Run tests on staging
+        working-directory: 'course-js-api-framework'
         run: |
-          echo "Running tests on staging..."
-          # Add commands to run tests on staging here
+          npm install
+          npm run greetings greetings_staging
 
   deploy-to-preprod:
     runs-on: self-hosted
@@ -103,11 +114,17 @@ jobs:
     needs: [deploy-to-preprod]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout course-js-api-framework repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/course-js-api-framework'
+          path: 'course-js-api-framework'
       - name: Run tests on preprod
+        working-directory: 'course-js-api-framework'
         run: |
-          echo "Running tests on preprod..."
-          # Add commands to run tests on preprod here
-
+          npm install
+          npm run greetings greetings_preprod
+          
   deploy-to-prod:
     runs-on: self-hosted
     needs: [tests-on-preprod]
@@ -129,7 +146,13 @@ jobs:
     needs: [deploy-to-prod]
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout course-js-api-framework repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'mtararujs/course-js-api-framework'
+          path: 'course-js-api-framework'
       - name: Run tests on prod
+        working-directory: 'course-js-api-framework'
         run: |
-          echo "Running tests on prod..."
-          # Add commands to run tests on prod here
+          npm install
+          npm run greetings greetings_prod
