@@ -43,7 +43,7 @@ jobs:
         working-directory: 'python-greetings'
         run: |
           pm2 delete greetings-app-dev || true
-          pm2 start app.py --name greetings-app-dev 7001
+          NODE_PORT=7001 pm2 start app.py --name greetings-app-dev
 
   tests-on-dev:
     runs-on: self-hosted
@@ -78,7 +78,7 @@ jobs:
         working-directory: 'python-greetings'
         run: |
           pm2 delete greetings-app-staging || true
-          pm2 start app.py --name greetings-app-staging -- 7002
+          NODE_PORT=7002 pm2 start app.py --name greetings-app-staging
         
   tests-on-staging:
     runs-on: self-hosted
@@ -110,7 +110,7 @@ jobs:
         working-directory: 'python-greetings'
         run: |
           pm2 delete greetings-app-preprod || true
-          pm2 start app.py --name greetings-app-preprod -- 7003
+          NODE_PORT=7003 pm2 start app.py --name greetings-app-preprod
           
   tests-on-preprod:
     runs-on: self-hosted
@@ -142,7 +142,7 @@ jobs:
         working-directory: 'python-greetings'
         run: |
           pm2 delete greetings-app-prod || true
-          pm2 start app.py --name greetings-app-prod -- 7004
+          NODE_PORT=7004 pm2 start app.py --name greetings-app-prod
 
   tests-on-prod:
     runs-on: self-hosted
